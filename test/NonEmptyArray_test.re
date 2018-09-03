@@ -17,13 +17,15 @@ describe("NonEmptyArray Combination", () => {
   test("Append", () => expect(append(nel, pure(4))) |> toEqual(NonEmpty(0, [|1, 2, 3, 4|])));
 });
 
-describe("NonEmptyArray Head and Tail", () => {
+describe("NonEmptyArray Basics", () => {
   let single = pure(0);
   let tuple = cons(0, pure(1));
 
   test("Head of singleton", () => expect(head(single)) |> toEqual(0));
   test("Tail of singleton", () => expect(tail(single)) |> toEqual([||]));
-  test("Tail of two-value NEL", () => expect(tail(tuple)) |> toEqual([|1|]));
+  test("Tail of two-value NE Array", () => expect(tail(tuple)) |> toEqual([|1|]));
+  test("Length of singleton", () => expect(length(single)) |> toEqual(1));
+  test("Length of two-value NE Array", () => expect(length(tuple)) |> toEqual(2));
 });
 
 describe("NonEmptyArray Functor and Foldable", () => {

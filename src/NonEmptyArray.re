@@ -6,7 +6,7 @@ module ArrayMonoid: MONOID_ANY with type t('a) = array('a) = {
   let empty = [||];
 };
 
-module ArrayHeadTail: NonEmpty.HEAD_TAIL with type t('a) = array('a) = {
+module ArrayHeadTail: NonEmpty.ARRAY_LIKE with type t('a) = array('a) = {
   type t('a) = array('a);
 
   let head = arr =>
@@ -14,6 +14,8 @@ module ArrayHeadTail: NonEmpty.HEAD_TAIL with type t('a) = array('a) = {
 
   let tail = arr =>
     Belt.Array.sliceToEnd(arr, 1);
+
+  let length = Belt.Array.length;
 };
 
 module NonEmptyArray = NonEmpty.NonEmpty(

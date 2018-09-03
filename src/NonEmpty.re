@@ -1,22 +1,24 @@
 open BsAbstract.Interface;
 
-module type HEAD_TAIL = {
+module type ARRAY_LIKE = {
   type t('a);
   let head: t('a) => option('a);
   let tail: t('a) => t('a);
+  let length: t('a) => int;
 };
 
 module NonEmpty = (
   M: MONOID_ANY,
   F: FOLDABLE with type t('a) = M.t('a),
   A: APPLICATIVE with type t('a) = M.t('a),
-  X: HEAD_TAIL with type t('a) = M.t('a)
+  X: ARRAY_LIKE with type t('a) = M.t('a)
 ) => {
 
   type t('a) = NonEmpty('a, M.t('a));
 
   let head = (NonEmpty(x, _)) => x;
   let tail = (NonEmpty(_, xs)) => xs;
+  let length = (NonEmpty(_, xs)) => 1 + X.length(xs);
 
   let pure = x => NonEmpty(x, M.empty);
 
