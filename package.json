@@ -1,7 +1,7 @@
 {
   "name": "bs-nonempty",
   "version": "0.1.0",
-  "description": "Abstract NonEmpty type and implementations for List and Array",
+  "description": "NonEmpty type and implementations for List and Array",
   "main": "index.js",
   "directories": {
     "test": "test"
