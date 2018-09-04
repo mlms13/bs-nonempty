@@ -6,7 +6,7 @@ module ArrayMonoid: MONOID_ANY with type t('a) = array('a) = {
   let empty = [||];
 };
 
-module ArrayHeadTail: NonEmpty.ARRAY_LIKE with type t('a) = array('a) = {
+module ArrayArrayLike: NonEmpty.ARRAY_LIKE with type t('a) = array('a) = {
   type t('a) = array('a);
 
   let head = arr =>
@@ -22,7 +22,7 @@ module NonEmptyArray = NonEmpty.NonEmpty(
   ArrayMonoid,
   BsAbstract.Array.Foldable,
   BsAbstract.Array.Applicative,
-  ArrayHeadTail
+  ArrayArrayLike
 );
 
 include NonEmptyArray;

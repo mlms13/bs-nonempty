@@ -1,5 +1,5 @@
 {
-  "name": "bs_nonempty",
+  "name": "bs-nonempty",
   "bsc-flags": ["-bs-no-version-header", "-bs-super-errors"],
   "bs-dependencies": [
     "bs-abstract"
