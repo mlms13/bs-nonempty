@@ -41,4 +41,7 @@ module NonEmpty = (
 
   let fold_left = (fn, init, NonEmpty(x, xs)) =>
     F.fold_left(fn, fn(init, x), xs);
+
+  let reverse = (NonEmpty(x, xs)) =>
+    F.fold_left((acc, curr) => append(pure(curr), acc), pure(x), xs);
 };
