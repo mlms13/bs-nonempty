@@ -2,6 +2,20 @@
 
 This small library provides implementations of `NonEmptyList` and `NonEmptyArray`: collection structures that guarantee you'll have at least one value. Additionally, you can build on top of the `NonEmptyBase` module to make a `NonEmpty*` version of your own collection type.
 
+## Installation
+
+**Install via npm:**
+
+`npm install --save bs-nonempty`
+
+**Update your bsconfig.json**
+
+```
+"bs-dependencies": [
+  "bs-nonempty"
+],
+```
+
 ## Usage
 
 The following demonstrates the API for using this library with `List`, but from these examples, it should be pretty easy to figure out how the `NonEmptyArray` version works.
