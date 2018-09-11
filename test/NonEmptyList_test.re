@@ -32,7 +32,7 @@ describe("NonEmptyList Functor and Foldable", () => {
   let nelInt = cons(0, cons(1, cons(2, pure(3))));
   let nelIntRev = cons(3, cons(2, cons(1, pure(0))));
   let nelStr = cons("0", cons("1", cons("2", pure("3"))));
-  let add = (a, b) => a + b;
+  let add = (+);
 
   test("Map NEL of Int to String", () => expect(map(string_of_int, nelInt)) |> toEqual(nelStr));
   test("Sum NEL of Int (fold_left)", () => expect(fold_left(add, 0, nelInt)) |> toEqual(6));
