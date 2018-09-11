@@ -36,5 +36,22 @@ describe("NonEmptyList Functor and Foldable", () => {
 
   test("Map NEL of Int to String", () => expect(map(string_of_int, nelInt)) |> toEqual(nelStr));
   test("Sum NEL of Int (fold_left)", () => expect(fold_left(add, 0, nelInt)) |> toEqual(6));
+  test("Sum using foldl1 instead of fold_left", () => expect(foldl1(add, nelInt)) |> toEqual(6));
   test("Reverse NEL of Int", () => expect(reverse(nelInt)) |> toEqual(nelIntRev));
+});
+
+describe("NonEmptyList Monad (join and flat_map)", () => {
+  let nelInt = cons(0, pure(1));
+  let nela = cons("a", cons("b", pure("c")));
+  let nelb = cons("d", cons("e", cons("f", pure("g"))));
+  let nelnel = cons(nela, pure(nelb));
+  let joined = cons("a", cons("b", cons("c", cons("d", cons("e", cons("f", pure("g")))))));
+
+  let toNelOfTup = (i) => map(v => (i, v), nela);
+  let flatmapped = flat_map(nelInt, toNelOfTup);
+  let tuples = cons((0, "a"), cons((0, "b"), cons((0, "c"),
+               cons((1, "a"), cons((1, "b"), pure((1, "c")))))));
+
+  test("Join nel of nel", () => expect(join(nelnel)) |> toEqual(joined));
+  test("FlatMap results in one layer of nel", () => expect(flatmapped) |> toEqual(tuples));
 });

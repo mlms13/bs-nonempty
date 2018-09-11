@@ -16,6 +16,8 @@ module NonEmpty = (
 
   type t('a) = NonEmpty('a, M.t('a));
 
+  let make = (x, xs) => NonEmpty(x, xs);
+
   let head = (NonEmpty(x, _)) => x;
   let tail = (NonEmpty(_, xs)) => xs;
   let length = (NonEmpty(_, xs)) => 1 + X.length(xs);
@@ -42,6 +44,15 @@ module NonEmpty = (
   let fold_left = (fn, init, NonEmpty(x, xs)) =>
     F.fold_left(fn, fn(init, x), xs);
 
+  let foldl1 = (fn, NonEmpty(x, xs)) =>
+    F.fold_left(fn, x, xs);
+
+  let join = nel =>
+    foldl1(append, nel);
+
   let reverse = (NonEmpty(x, xs)) =>
     F.fold_left((acc, curr) => append(pure(curr), acc), pure(x), xs);
+
+  let flat_map = (a, f) =>
+    map(f, a) |> join;
 };
