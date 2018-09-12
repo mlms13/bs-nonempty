@@ -53,7 +53,6 @@ module NonEmpty = (
   let join = nel =>
     foldl1(append, nel);
 
-  /* TODO: change implementation to use A.apply and write tests */
   let apply = (fns, nel) =>
     map((fn => map(fn, nel)), fns) |> join;
 

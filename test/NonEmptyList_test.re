@@ -3,11 +3,10 @@ open Expect;
 open NonEmptyList;
 
 describe("NonEmptyList Construction", () => {
-  let nel = pure("a");
-
-  test("...from a single value", () => expect(nel) |> toEqual(NonEmpty("a", [])));
+  test("...from a single value", () => expect(pure("a")) |> toEqual(NonEmpty("a", [])));
   test("...from an empty list", () => expect(fromT([])) |> toEqual(None));
-  test("...from a non empty list", () => expect(fromT(["a"])) |> toEqual(Some(nel)));
+  test("...from a non empty list", () => expect(fromT(["a"])) |> toEqual(Some(pure("a"))));
+  test("...from the `make` constructor", () => expect(make(1, [2])) |> toEqual(cons(1, pure(2))));
 });
 
 describe("NonEmptyList Combination", () => {
@@ -38,6 +37,16 @@ describe("NonEmptyList Functor and Foldable", () => {
   test("Sum NEL of Int (fold_left)", () => expect(fold_left(add, 0, nelInt)) |> toEqual(6));
   test("Sum using foldl1 instead of fold_left", () => expect(foldl1(add, nelInt)) |> toEqual(6));
   test("Reverse NEL of Int", () => expect(reverse(nelInt)) |> toEqual(nelIntRev));
+});
+
+describe("NonEmptyList Apply", () => {
+  let increment = n => n + 1;
+  let double = n => n * 2;
+  let fns = make(increment, [double]);
+  let inpt = make(0, [1, 2, 3]);
+  let output = make(1, [2, 3, 4, 0, 2, 4, 6]);
+
+  test("`apply` calls each function for each item in the NEL", () => expect(apply(fns, inpt)) |> toEqual(output));
 });
 
 describe("NonEmptyList Monad (join and flat_map)", () => {
