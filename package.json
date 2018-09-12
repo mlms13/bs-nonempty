@@ -1,7 +1,7 @@
 {
   "name": "bs-nonempty",
-  "version": "1.1.0",
-  "description": "NonEmpty type and implementations for List and Array",
+  "version": "1.2.0",
+  "description": "NonEmpty collection type with implementations for List and Array",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -11,10 +11,12 @@
     "build": "bsb -make-world",
     "test": "npm run clean && npm run build && jest --testMatch '**/test/*.js'"
   },
+  "homepage": "https://github.com/mlms13/bs-nonempty",
   "repository": {
     "type": "git",
     "url": "github.com/mlms13/bs-nonempty"
   },
+  "bugs": "https://github.com/mlms13/bs-nonempty/issues",
   "keywords": [
     "reasonml",
     "bucklescript",
