@@ -71,3 +71,34 @@ let join: (NonEmptyList.t(NonEmptyList.t('a))) => NonEmptyList.t('a);
 let reverse: NonEmptyList.t('a) => NonEmptyList.t('a);
 let length: NonEmptyList.t('a) => int;
 ```
+
+## Typeclasses
+
+`NonEmpty` is built on top of the great work in [bs-abstract](https://github.com/Risto-Stevcev/bs-abstract). Every `NonEmpty*` implementation (currently List and Array) is a member of the following typeclasses (which can be accessed like `NonEmptyList.Functor.map`):
+
+- [MAGMA_ANY](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L18-L21) and [SEMIGROUP_ANY](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L25) with infix `append` (e.g. `NonEmptyList.Infix.(<:>)`)
+- [FUNCTOR](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L78-L81) with infix `map` (e.g. `NonEmptyList.Infix.(<$>)`)
+- [APPLY](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L83-L86) and [APPLICATIVE](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L88-L91) with infix `apply` (e.g. `NonEmptyList.Infix.(<*>)`)
+- [MONAD](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L93-L96) with infix `flat_map` (e.g. `NonEmptyList.Infix.(>>=)`)
+
+Additionally, to roll your own `NonEmpty*` type, the underlying container type needs to be a member of [MONOID_ANY](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L33-L36), [APPLICATIVE](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L88-L91), and [FOLDABLE](https://github.com/Risto-Stevcev/bs-abstract/blob/v0.16.0/src/interfaces/Interface.re#L113-L122) (as well as provide implementations for `head`, `tail`, and `length` functions). See the implementations of `NonEmptyList` and `NonEmptyArray` for examples.
+
+## Contributing
+
+1. Fork and clone this repository
+2. `npm install` to grab `bs-abstract` and any dev dependencies
+3. Add features (and tests!) as appropriate
+4. `npm run test`
+5. Bump the version in `package.json` following [semver](https://semver.org/)
+
+Here are some things worth contributing:
+
+- `fold_right` implementation so we can be a member of `FOLDABLE`
+- `EQ` if the underlying `'a` is a member of `EQ`
+- `TRAVERSABLE` if the underlying `'a` is a member of `APPLICATIVE`
+- docblock comments so we can automate the documentation
+- Any extra utility functions or `NonEmptyOtherCollectionType` implementations
+
+## License
+
+Released under the MIT license. See `LICENSE`.
