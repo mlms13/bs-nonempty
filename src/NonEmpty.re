@@ -38,21 +38,48 @@ module NonEmpty = (
   let cons = (x, nel) =>
     append(pure(x), nel);
 
-  let map = (fn, NonEmpty(x, xs)) =>
-    NonEmpty(fn(x), A.map(fn, xs));
-
   let fold_left = (fn, init, NonEmpty(x, xs)) =>
     F.fold_left(fn, fn(init, x), xs);
 
   let foldl1 = (fn, NonEmpty(x, xs)) =>
     F.fold_left(fn, x, xs);
 
-  let join = nel =>
-    foldl1(append, nel);
-
   let reverse = (NonEmpty(x, xs)) =>
     F.fold_left((acc, curr) => append(pure(curr), acc), pure(x), xs);
 
+  let map = (fn, NonEmpty(x, xs)) =>
+    NonEmpty(fn(x), A.map(fn, xs));
+
+  let join = nel =>
+    foldl1(append, nel);
+
+  /* TODO: change implementation to use A.apply and write tests */
+  let apply = (fns, nel) =>
+    map((fn => map(fn, nel)), fns) |> join;
+
   let flat_map = (a, f) =>
     map(f, a) |> join;
+
+  module Functor: FUNCTOR with type t('a) = t('a) = {
+    type x('a) = t('a);
+    type t('a) = x('a);
+    let map = map;
+  };
+
+  module Apply: APPLY with type t('a) = t('a) = {
+    include Functor;
+    let apply = apply;
+  };
+
+  module Applicative: APPLICATIVE with type t('a) = t('a) = {
+    include Apply;
+    let pure = pure;
+  };
+
+  module Monad: MONAD with type t('a) = t('a) = {
+    include Applicative;
+    let flat_map = flat_map;
+  };
+
+  /* TODO: infix */
 };

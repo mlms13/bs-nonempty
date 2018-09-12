@@ -1,1 +1,17 @@
+# keep the tests out of npm
 test
+
+# ...plus all of the stuff from gitignore
+
+node_modules
+*/log
+.vscode
+
+# generated
+/lib/bs
+*.bs.js
+/dist
+.merlin
+
+# os files
+.DS_Store
