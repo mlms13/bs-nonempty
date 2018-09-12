@@ -6,7 +6,7 @@ module ListMonoid: MONOID_ANY with type t('a) = list('a) = {
   let empty = [];
 };
 
-module ListArrayLike: NonEmpty.ARRAY_LIKE with type t('a) = list('a) = {
+module ListArrayLike: NonEmptyBase.ARRAY_LIKE with type t('a) = list('a) = {
   type t('a) = list('a);
 
   let head = l => switch l {
@@ -22,7 +22,7 @@ module ListArrayLike: NonEmpty.ARRAY_LIKE with type t('a) = list('a) = {
   let length = List.length;
 };
 
-module NonEmptyList = NonEmpty.NonEmpty(
+module NonEmptyList = NonEmptyBase.NonEmptyBase(
   ListMonoid,
   BsAbstract.List.Foldable,
   BsAbstract.List.Applicative,

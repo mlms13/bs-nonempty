@@ -6,7 +6,7 @@ module ArrayMonoid: MONOID_ANY with type t('a) = array('a) = {
   let empty = [||];
 };
 
-module ArrayArrayLike: NonEmpty.ARRAY_LIKE with type t('a) = array('a) = {
+module ArrayArrayLike: NonEmptyBase.ARRAY_LIKE with type t('a) = array('a) = {
   type t('a) = array('a);
 
   let head = arr =>
@@ -18,7 +18,7 @@ module ArrayArrayLike: NonEmpty.ARRAY_LIKE with type t('a) = array('a) = {
   let length = Belt.Array.length;
 };
 
-module NonEmptyArray = NonEmpty.NonEmpty(
+module NonEmptyArray = NonEmptyBase.NonEmptyBase(
   ArrayMonoid,
   BsAbstract.Array.Foldable,
   BsAbstract.Array.Applicative,

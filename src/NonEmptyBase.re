@@ -7,7 +7,7 @@ module type ARRAY_LIKE = {
   let length: t('a) => int;
 };
 
-module NonEmpty = (
+module NonEmptyBase = (
   M: MONOID_ANY,
   F: FOLDABLE with type t('a) = M.t('a),
   A: APPLICATIVE with type t('a) = M.t('a),
