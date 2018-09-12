@@ -1,6 +1,6 @@
 {
   "name": "bs-nonempty",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "NonEmpty collection type with implementations for List and Array",
   "main": "index.js",
   "directories": {
@@ -14,7 +14,7 @@
   "homepage": "https://github.com/mlms13/bs-nonempty",
   "repository": {
     "type": "git",
-    "url": "github.com/mlms13/bs-nonempty"
+    "url": "https://github.com/mlms13/bs-nonempty.git"
   },
   "bugs": "https://github.com/mlms13/bs-nonempty/issues",
   "keywords": [
