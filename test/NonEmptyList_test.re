@@ -64,3 +64,14 @@ describe("NonEmptyList Monad (join and flat_map)", () => {
   test("Join nel of nel", () => expect(join(nelnel)) |> toEqual(joined));
   test("FlatMap results in one layer of nel", () => expect(flatmapped) |> toEqual(tuples));
 });
+
+describe("NonEmptyList typeclasses and infix functions", () => {
+  let ((<:>), (<$>)) = NonEmptyList.Infix.((<:>), (<$>));
+
+  let increment = n => n + 1;
+  let inpt = make(0, [1, 2]);
+  let mapped = make(1, [2, 3]);
+
+  test("Infix append function", () => expect(inpt <:> pure(3)) |> toEqual(make(0, [1, 2, 3])));
+  test("Infix map function", () => expect(increment <$> inpt) |> toEqual(mapped));
+});

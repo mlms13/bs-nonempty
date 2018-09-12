@@ -59,6 +59,17 @@ module NonEmpty = (
   let flat_map = (a, f) =>
     map(f, a) |> join;
 
+  module Magma_Any: MAGMA_ANY with type t('a) = t('a) = {
+    type x('a) = t('a);
+    type t('a) = x('a);
+
+    let append = append;
+  };
+
+  module Semigroup_Any: SEMIGROUP_ANY with type t('a) = t('a) = {
+    include Magma_Any;
+  };
+
   module Functor: FUNCTOR with type t('a) = t('a) = {
     type x('a) = t('a);
     type t('a) = x('a);
@@ -80,5 +91,8 @@ module NonEmpty = (
     let flat_map = flat_map;
   };
 
-  /* TODO: infix */
+  module Infix = {
+    include BsAbstract.Infix.Magma_Any(Magma_Any);
+    include BsAbstract.Infix.Monad(Monad);
+  };
 };

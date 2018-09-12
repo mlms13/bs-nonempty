@@ -29,10 +29,4 @@ module NonEmptyList = NonEmpty.NonEmpty(
   ListArrayLike
 );
 
-/* module Foldable: BsAbstract.Interface.FOLDABLE = {
-  type t('a) = NonEmptyList.t('a);
-
-  let fold_left = NonEmptyList.fold_left;
-}; */
-
 include NonEmptyList;
