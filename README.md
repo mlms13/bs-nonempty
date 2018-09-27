@@ -22,6 +22,8 @@ The following demonstrates the API for using this library with `List`, but from 
 
 **Construct a NonEmptyList**
 
+For constructing a new `NonEmptyList.t`, you can use `make`, `pure`, `cons`, and `fromT`. You can turn your `NonEmptyList.t` into a `list` using `toT`. The signatures of those functions look like:
+
 ```reason
 let make: ('a, list('a)) => NonEmptyList.t('a);
 ```
@@ -35,6 +37,8 @@ let cons: ('a, NonEmptyList.t('a)) => NonEmptyList.t('a);
 let fromT: list('a) => option(NonEmptyList.t('a));
 let toT: NonEmptyList.t('a) => list('a);
 ```
+
+You can use those functions like this:
 
 ```reason
 /* "import" from NonEmptyList */
@@ -73,6 +77,8 @@ let length: NonEmptyList.t('a) => int;
 ```
 
 ## Typeclasses
+
+Note: If "semigroup" is a word that freaks you out, you can ignore this entire section. You already know more than enough to use this library. But if you're already familiar with `bs-abstract`, the following might come in handy.
 
 `NonEmpty` is built on top of the great work in [bs-abstract](https://github.com/Risto-Stevcev/bs-abstract). Every `NonEmpty*` implementation (currently List and Array) is a member of the following typeclasses (which can be accessed like `NonEmptyList.Functor.map`):
 
