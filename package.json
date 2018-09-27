@@ -1,6 +1,6 @@
 {
   "name": "bs-nonempty",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "NonEmpty collection type with implementations for List and Array",
   "main": "index.js",
   "directories": {

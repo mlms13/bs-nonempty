@@ -89,7 +89,6 @@ Additionally, to roll your own `NonEmpty*` type, the underlying container type n
 2. `npm install` to grab `bs-abstract` and any dev dependencies
 3. Add features (and tests!) as appropriate
 4. `npm run test`
-5. Bump the version in `package.json` following [semver](https://semver.org/)
 
 Here are some things worth contributing:
 
