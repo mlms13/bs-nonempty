@@ -60,8 +60,7 @@ module NonEmptyBase = (
     map(f, a) |> join;
 
   module Magma_Any: MAGMA_ANY with type t('a) = t('a) = {
-    type x('a) = t('a);
-    type t('a) = x('a);
+    type nonrec t('a) = t('a);
 
     let append = append;
   };
