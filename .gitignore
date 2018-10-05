@@ -6,6 +6,7 @@ node_modules
 /lib/bs
 /dist
 .merlin
+*.bs.js
 
 # os files
 .DS_Store
