@@ -1,7 +1,7 @@
 {
   "name": "bs-nonempty",
   "version": "1.2.3",
-  "description": "NonEmpty collection type with implementations for List and Array",
+  "description": "NonEmpty type with Array and List implementations for ReasonML and OCaml",
   "main": "index.js",
   "directories": {
     "test": "test"
