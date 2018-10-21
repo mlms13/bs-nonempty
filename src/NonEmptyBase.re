@@ -16,6 +16,10 @@ module NonEmptyBase = (
 
   type t('a) = NonEmpty('a, M.t('a));
 
+  /* private, reverse the underlying structure */
+  let rev_inner = v =>
+    F.fold_left((acc, x) => M.append(A.pure(x), acc), M.empty, v);
+
   let make = (x, xs) => NonEmpty(x, xs);
 
   let head = (NonEmpty(x, _)) => x;
@@ -45,7 +49,13 @@ module NonEmptyBase = (
     F.fold_left(fn, x, xs);
 
   let reverse = (NonEmpty(x, xs)) =>
-    F.fold_left((acc, curr) => append(pure(curr), acc), pure(x), xs);
+    F.fold_left((acc, curr) => cons(curr, acc), pure(x), xs);
+
+  let filter: ('a => bool, t('a)) => M.t('a) = (pred, l) =>
+    fold_left((acc, x) =>
+      pred(x) ? M.append(A.pure(x), acc) : acc, M.empty, l
+    )
+    |> rev_inner;
 
   let map = (fn, NonEmpty(x, xs)) =>
     NonEmpty(fn(x), A.map(fn, xs));

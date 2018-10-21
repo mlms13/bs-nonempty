@@ -13,6 +13,7 @@ let cons: ('a, t('a)) => t('a);
 let fold_left: (('a, 'b) => 'a, 'a, t('b)) => 'a;
 let foldl1: (('a, 'a) => 'a, t('a)) => 'a;
 let reverse: t('a) => t('a);
+let filter: ('a => bool, t('a)) => list('a);
 let map: ('a => 'b, t('a)) => t('b);
 let join: t(t('a)) => t('a);
 let apply: (t('a => 'b), t('a)) => t('b);

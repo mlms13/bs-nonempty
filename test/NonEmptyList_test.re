@@ -40,6 +40,15 @@ describe("NonEmptyList Functor and Foldable", () => {
   test("Reverse NEL of Int", () => expect(reverse(nelInt)) |> toEqual(nelIntRev));
 });
 
+describe("Bonus foldable value (e.g. filter)", () => {
+  let full = make(1, [2, 1, 3, 4, 1, 6]);
+  let filtered = [2, 4, 6];
+  let isEven = v => v mod 2 == 0;
+
+  test("Filter odds out of NEL of Int", () => expect(filter(isEven, full)) |> toEqual(filtered));
+
+});
+
 describe("NonEmptyList Apply", () => {
   let increment = n => n + 1;
   let double = n => n * 2;
