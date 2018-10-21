@@ -1,5 +1,5 @@
 type t('a) =
-    NonEmpty('a, list('a));
+  | NonEmpty('a, list('a));
 
 let make: ('a, list('a)) => t('a);
 let head: t('a) => 'a;
@@ -19,49 +19,49 @@ let join: t(t('a)) => t('a);
 let apply: (t('a => 'b), t('a)) => t('b);
 let flat_map: (t('a), 'a => t('b)) => t('b);
 
-module Magma_Any:
-  { type nonrec t('a) = t('a); let append: (t('a), t('a)) => t('a); };
+module Magma_Any: {
+  type nonrec t('a) = t('a);
+  let append: (t('a), t('a)) => t('a);
+};
 
-module Semigroup_Any:
-  { type nonrec t('a) = t('a); let append: (t('a), t('a)) => t('a); };
+module Semigroup_Any: {
+  type nonrec t('a) = t('a);
+  let append: (t('a), t('a)) => t('a);
+};
 
-module Functor:
-  { type nonrec t('a) = t('a); let map: ('a => 'b, t('a)) => t('b); };
+module Functor: {
+  type nonrec t('a) = t('a);
+  let map: ('a => 'b, t('a)) => t('b);
+};
 
-module Apply:
-  {
-    type nonrec t('a) = t('a);
-    let map: ('a => 'b, t('a)) => t('b);
-    let apply: (t('a => 'b), t('a)) => t('b);
-  };
+module Apply: {
+  type nonrec t('a) = t('a);
+  let map: ('a => 'b, t('a)) => t('b);
+  let apply: (t('a => 'b), t('a)) => t('b);
+};
 
-module Applicative:
-  {
-    type nonrec t('a) = t('a);
-    let map: ('a => 'b, t('a)) => t('b);
-    let apply: (t('a => 'b), t('a)) => t('b);
-    let pure: 'a => t('a);
-  };
+module Applicative: {
+  type nonrec t('a) = t('a);
+  let map: ('a => 'b, t('a)) => t('b);
+  let apply: (t('a => 'b), t('a)) => t('b);
+  let pure: 'a => t('a);
+};
 
-module Monad:
-  {
-    type nonrec t('a) = t('a);
-    let map: ('a => 'b, t('a)) => t('b);
-    let apply: (t('a => 'b), t('a)) => t('b);
-    let pure: 'a => t('a);
-    let flat_map: (t('a), 'a => t('b)) => t('b);
-  };
+module Monad: {
+  type nonrec t('a) = t('a);
+  let map: ('a => 'b, t('a)) => t('b);
+  let apply: (t('a => 'b), t('a)) => t('b);
+  let pure: 'a => t('a);
+  let flat_map: (t('a), 'a => t('b)) => t('b);
+};
 
-module Infix:
-  {
-    let ( <:> ): (t('a), t('a)) => t('a);
-    let ( <$> ): ('a => 'b, t('a)) => t('b);
-    let ( <#> ): (t('a), 'a => 'b) => t('b);
-    let ( <*> ): (t('a => 'b), t('a)) => t('b);
-    let ( >>= ): (t('a), 'a => t('b)) => t('b);
-    let ( =<< ): ('a => t('b), t('a)) => t('b);
-    let ( >=> ):
-      ('a => t('b), 'b => t('c), 'a) => t('c);
-    let ( <=< ):
-      ('a => t('b), 'c => t('a), 'c) => t('b);
-  };
+module Infix: {
+  let (<:>): (t('a), t('a)) => t('a);
+  let (<$>): ('a => 'b, t('a)) => t('b);
+  let (<#>): (t('a), 'a => 'b) => t('b);
+  let (<*>): (t('a => 'b), t('a)) => t('b);
+  let (>>=): (t('a), 'a => t('b)) => t('b);
+  let (=<<): ('a => t('b), t('a)) => t('b);
+  let (>=>): ('a => t('b), 'b => t('c), 'a) => t('c);
+  let (<=<): ('a => t('b), 'c => t('a), 'c) => t('b);
+};

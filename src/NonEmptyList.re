@@ -9,24 +9,27 @@ module ListMonoid: MONOID_ANY with type t('a) = list('a) = {
 module ListArrayLike: NonEmptyBase.ARRAY_LIKE with type t('a) = list('a) = {
   type t('a) = list('a);
 
-  let head = l => switch l {
-  | [] => None
-  | [x, ..._] => Some(x)
-  };
+  let head = l =>
+    switch (l) {
+    | [] => None
+    | [x, ..._] => Some(x)
+    };
 
-  let tail = l => switch l {
-  | [] => []
-  | [_, ...xs] => xs
-  };
+  let tail = l =>
+    switch (l) {
+    | [] => []
+    | [_, ...xs] => xs
+    };
 
   let length = List.length;
 };
 
-module NonEmptyList = NonEmptyBase.NonEmptyBase(
-  ListMonoid,
-  BsAbstract.List.Foldable,
-  BsAbstract.List.Applicative,
-  ListArrayLike
-);
+module NonEmptyList =
+  NonEmptyBase.NonEmptyBase(
+    ListMonoid,
+    BsAbstract.List.Foldable,
+    BsAbstract.List.Applicative,
+    ListArrayLike,
+  );
 
 include NonEmptyList;

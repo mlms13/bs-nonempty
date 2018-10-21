@@ -7,14 +7,15 @@ module type ARRAY_LIKE = {
   let length: t('a) => int;
 };
 
-module NonEmptyBase = (
-  M: MONOID_ANY,
-  F: FOLDABLE with type t('a) = M.t('a),
-  A: APPLICATIVE with type t('a) = M.t('a),
-  X: ARRAY_LIKE with type t('a) = M.t('a)
-) => {
-
-  type t('a) = NonEmpty('a, M.t('a));
+module NonEmptyBase =
+       (
+         M: MONOID_ANY,
+         F: FOLDABLE with type t('a) = M.t('a),
+         A: APPLICATIVE with type t('a) = M.t('a),
+         X: ARRAY_LIKE with type t('a) = M.t('a),
+       ) => {
+  type t('a) =
+    | NonEmpty('a, M.t('a));
 
   /* private, reverse the underlying structure */
   let rev_inner = v =>
@@ -28,46 +29,42 @@ module NonEmptyBase = (
 
   let pure = x => NonEmpty(x, M.empty);
 
-  let fromT = v => switch (X.head(v)) {
-  | None => None
-  | Some(x) => Some(NonEmpty(x, X.tail(v)))
-  };
+  let fromT = v =>
+    switch (X.head(v)) {
+    | None => None
+    | Some(x) => Some(NonEmpty(x, X.tail(v)))
+    };
 
-  let toT = (NonEmpty(x, xs)) =>
-    M.append(A.pure(x), xs);
+  let toT = (NonEmpty(x, xs)) => M.append(A.pure(x), xs);
 
   let append = (NonEmpty(x, xs), nel) =>
     NonEmpty(x, M.append(xs, toT(nel)));
 
-  let cons = (x, nel) =>
-    append(pure(x), nel);
+  let cons = (x, nel) => append(pure(x), nel);
 
   let fold_left = (fn, init, NonEmpty(x, xs)) =>
     F.fold_left(fn, fn(init, x), xs);
 
-  let foldl1 = (fn, NonEmpty(x, xs)) =>
-    F.fold_left(fn, x, xs);
+  let foldl1 = (fn, NonEmpty(x, xs)) => F.fold_left(fn, x, xs);
 
   let reverse = (NonEmpty(x, xs)) =>
     F.fold_left((acc, curr) => cons(curr, acc), pure(x), xs);
 
-  let filter: ('a => bool, t('a)) => M.t('a) = (pred, l) =>
-    fold_left((acc, x) =>
-      pred(x) ? M.append(A.pure(x), acc) : acc, M.empty, l
+  let filter = (pred, l) =>
+    fold_left(
+      (acc, x) => pred(x) ? M.append(A.pure(x), acc) : acc,
+      M.empty,
+      l,
     )
     |> rev_inner;
 
-  let map = (fn, NonEmpty(x, xs)) =>
-    NonEmpty(fn(x), A.map(fn, xs));
+  let map = (fn, NonEmpty(x, xs)) => NonEmpty(fn(x), A.map(fn, xs));
 
-  let join = nel =>
-    foldl1(append, nel);
+  let join = nel => foldl1(append, nel);
 
-  let apply = (fns, nel) =>
-    map((fn => map(fn, nel)), fns) |> join;
+  let apply = (fns, nel) => map(fn => map(fn, nel), fns) |> join;
 
-  let flat_map = (a, f) =>
-    map(f, a) |> join;
+  let flat_map = (a, f) => map(f, a) |> join;
 
   module Magma_Any: MAGMA_ANY with type t('a) = t('a) = {
     type nonrec t('a) = t('a);
