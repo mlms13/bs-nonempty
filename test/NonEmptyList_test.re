@@ -80,6 +80,42 @@ describe("Bonus foldable value (e.g. filter)", () => {
   test("Filter odds out of NEL of Int", () =>
     expect(filter(isEven, full)) |> toEqual(filtered)
   );
+
+  test("All evens pass `isEven` predicate", () =>
+    expect(all(isEven, make(2, [4, 6]))) |> toEqual(true)
+  );
+
+  test("First value odd does not pass `isEven predicate", () =>
+    expect(all(isEven, make(1, [2, 4]))) |> toEqual(false)
+  );
+
+  test("Last value odd does not pass `isEven predicate", () =>
+    expect(all(isEven, make(2, [4, 1]))) |> toEqual(false)
+  );
+
+  test("`any` is true when first value passes predicate", () =>
+    expect(any(isEven, make(2, []))) |> toEqual(true)
+  );
+
+  test("`any` is true when last value passes predicate", () =>
+    expect(any(isEven, make(1, [1, 2]))) |> toEqual(true)
+  );
+
+  test("`any` is true when multiple values pass predicate", () =>
+    expect(any(isEven, make(1, [2, 4]))) |> toEqual(true)
+  );
+
+  test("`any` is false when no values pass predicate", () =>
+    expect(any(isEven, make(1, [3, 5]))) |> toEqual(false)
+  );
+
+  test("`find` returns first with multiple matches", () =>
+    expect(find(isEven, make(1, [2, 3, 4]))) |> toEqual(Some(2))
+  );
+
+  test("`find` returns None with no matches", () =>
+    expect(find(isEven, make(1, [3, 5]))) |> toEqual(None)
+  );
 });
 
 describe("NonEmptyList Apply", () => {

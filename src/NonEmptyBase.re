@@ -50,13 +50,22 @@ module NonEmptyBase =
   let reverse = (NonEmpty(x, xs)) =>
     F.fold_left((acc, curr) => cons(curr, acc), pure(x), xs);
 
-  let filter = (pred, l) =>
+  let filter = (pred, nel) =>
     fold_left(
       (acc, x) => pred(x) ? M.append(A.pure(x), acc) : acc,
       M.empty,
-      l,
+      nel,
     )
     |> rev_inner;
+
+  let all = pred => fold_left((acc, curr) => acc && pred(curr), true);
+
+  let any = pred => fold_left((acc, curr) => acc || pred(curr), false);
+
+  let find = pred => fold_left((acc, curr) => switch (acc) {
+  | Some(v) => Some(v)
+  | None => pred(curr) ? Some(curr) : None
+  }, None);
 
   let map = (fn, NonEmpty(x, xs)) => NonEmpty(fn(x), A.map(fn, xs));
 
