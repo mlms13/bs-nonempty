@@ -5,8 +5,9 @@ open NonEmptyList;
 describe("NonEmptyList Construction", () => {
   test("...from a single value", () => expect(pure("a")) |> toEqual(NonEmpty("a", [])));
   test("...from an empty list", () => expect(fromT([])) |> toEqual(None));
-  test("...from a non empty list", () => expect(fromT(["a"])) |> toEqual(Some(pure("a"))));
-  test("...from the `make` constructor", () => expect(make(1, [2])) |> toEqual(cons(1, pure(2))));
+  test("...from a non empty list", () => expect(fromT(["a"])) |> toEqual(Some(NonEmpty("a", []))));
+  test("...from the `make` constructor", () => expect(make(1, [2])) |> toEqual(NonEmpty(1, [2])));
+  test("...from `cons`", () => expect(cons(1, pure(2))) |> toEqual(NonEmpty(1, [2])));
 });
 
 describe("NonEmptyList Combination", () => {
@@ -17,20 +18,20 @@ describe("NonEmptyList Combination", () => {
 });
 
 describe("NonEmptyList Basics", () => {
-  let single = pure(0);
-  let tuple = cons(0, pure(1));
+  let one = pure(0);
+  let two = make(0, [1]);
 
-  test("Head of singleton", () => expect(head(single)) |> toEqual(0));
-  test("Tail of singleton", () => expect(tail(single)) |> toEqual([]));
-  test("Tail of two-value NEL", () => expect(tail(tuple)) |> toEqual([1]));
-  test("Length of singleton", () => expect(length(single)) |> toEqual(1));
-  test("Length of two-value NEL", () => expect(length(tuple)) |> toEqual(2));
+  test("Head of singleton", () => expect(head(one)) |> toEqual(0));
+  test("Tail of singleton", () => expect(tail(one)) |> toEqual([]));
+  test("Tail of two-value NEL", () => expect(tail(two)) |> toEqual([1]));
+  test("Length of singleton", () => expect(length(one)) |> toEqual(1));
+  test("Length of two-value NEL", () => expect(length(two)) |> toEqual(2));
 });
 
 describe("NonEmptyList Functor and Foldable", () => {
-  let nelInt = cons(0, cons(1, cons(2, pure(3))));
-  let nelIntRev = cons(3, cons(2, cons(1, pure(0))));
-  let nelStr = cons("0", cons("1", cons("2", pure("3"))));
+  let nelInt = make(0, [1, 2, 3]);
+  let nelIntRev = make(3, [2, 1, 0]);
+  let nelStr = make("0", ["1", "2", "3"]);
   let add = (+);
 
   test("Map NEL of Int to String", () => expect(map(string_of_int, nelInt)) |> toEqual(nelStr));
@@ -50,16 +51,21 @@ describe("NonEmptyList Apply", () => {
 });
 
 describe("NonEmptyList Monad (join and flat_map)", () => {
-  let nelInt = cons(0, pure(1));
-  let nela = cons("a", cons("b", pure("c")));
-  let nelb = cons("d", cons("e", cons("f", pure("g"))));
-  let nelnel = cons(nela, pure(nelb));
-  let joined = cons("a", cons("b", cons("c", cons("d", cons("e", cons("f", pure("g")))))));
+  let nelInt = make(0, [1]);
+  let nela = make("a", ["b", "c"]);
+  let nelb = make("d", ["e", "f", "g"]);
+  let nelnel = make(nela, [nelb]);
+  let joined = make("a", ["b", "c", "d", "e", "f", "g"]);
 
   let toNelOfTup = (i) => map(v => (i, v), nela);
   let flatmapped = flat_map(nelInt, toNelOfTup);
-  let tuples = cons((0, "a"), cons((0, "b"), cons((0, "c"),
-               cons((1, "a"), cons((1, "b"), pure((1, "c")))))));
+  let tuples = make((0, "a"), [
+    (0, "b"),
+    (0, "c"),
+    (1, "a"),
+    (1, "b"),
+    (1, "c"),
+  ])
 
   test("Join nel of nel", () => expect(join(nelnel)) |> toEqual(joined));
   test("FlatMap results in one layer of nel", () => expect(flatmapped) |> toEqual(tuples));
