@@ -42,6 +42,18 @@ module NonEmptyBase =
 
   let cons = (x, nel) => append(pure(x), nel);
 
+  let zip_with = (f, NonEmpty(x, xs), NonEmpty(y, ys)) => {
+    let rec go = (acc, a, b) =>
+      switch (X.head(a), X.head(b)) {
+      | (Some(ha), Some(hb)) =>
+        go(M.append(A.pure(f(ha, hb)), acc), X.tail(a), X.tail(b))
+      | _ => acc
+      };
+    make(f(x, y), go(M.empty, xs, ys) |> rev_inner);
+  };
+
+  let zip = (x, y) => zip_with((a, b) => (a, b), x, y);
+
   let fold_left = (fn, init, NonEmpty(x, xs)) =>
     F.fold_left(fn, fn(init, x), xs);
 
@@ -62,10 +74,15 @@ module NonEmptyBase =
 
   let any = pred => fold_left((acc, curr) => acc || pred(curr), false);
 
-  let find = pred => fold_left((acc, curr) => switch (acc) {
-  | Some(v) => Some(v)
-  | None => pred(curr) ? Some(curr) : None
-  }, None);
+  let find = pred =>
+    fold_left(
+      (acc, curr) =>
+        switch (acc) {
+        | Some(v) => Some(v)
+        | None => pred(curr) ? Some(curr) : None
+        },
+      None,
+    );
 
   let map = (fn, NonEmpty(x, xs)) => NonEmpty(fn(x), A.map(fn, xs));
 
@@ -74,6 +91,13 @@ module NonEmptyBase =
   let apply = (fns, nel) => map(fn => map(fn, nel), fns) |> join;
 
   let flat_map = (a, f) => map(f, a) |> join;
+
+  module Eq = (E: EQ) => {
+    type nonrec t = t(E.t);
+    /* let eq = (a, b) =>
+       length(a) == length(b) &&
+       fold_left((acc, curr) => ) */
+  };
 
   module Magma_Any: MAGMA_ANY with type t('a) = t('a) = {
     type nonrec t('a) = t('a);

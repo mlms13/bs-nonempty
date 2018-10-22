@@ -10,6 +10,8 @@ let fromT: array('a) => option(t('a));
 let toT: t('a) => array('a);
 let append: (t('a), t('a)) => t('a);
 let cons: ('a, t('a)) => t('a);
+let zip_with: (('a, 'b) => 'c, t('a), t('b)) => t('c);
+let zip: (t('a), t('b)) => t(('a, 'b));
 let fold_left: (('a, 'b) => 'a, 'a, t('b)) => 'a;
 let foldl1: (('a, 'a) => 'a, t('a)) => 'a;
 let reverse: t('a) => t('a);

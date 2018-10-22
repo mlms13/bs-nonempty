@@ -52,6 +52,21 @@ describe("NonEmptyList Basics", () => {
   );
 });
 
+describe("NonEmptyList zipping", () => {
+  let a = make(1, [3, 5, 7]);
+  let b = make(2, [4, 6]);
+  let bstr = map(string_of_int, b);
+  let zipmult = make(2, [12, 30]);
+  let tups = make((1, "2"), [(3, "4"), (5, "6")]);
+
+  test("zip_with, multiplying both inputs", () =>
+    expect(zip_with((x, y) => x * y, a, b)) |> toEqual(zipmult)
+  );
+  test("zip, tuple of int and string", () =>
+    expect(zip(a, bstr)) |> toEqual(tups)
+  );
+});
+
 describe("NonEmptyList Functor and Foldable", () => {
   let nelInt = make(0, [1, 2, 3]);
   let nelIntRev = make(3, [2, 1, 0]);
