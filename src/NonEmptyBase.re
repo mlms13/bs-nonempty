@@ -92,11 +92,13 @@ module NonEmptyBase =
 
   let flat_map = (a, f) => map(f, a) |> join;
 
-  module Eq = (E: EQ) => {
+  module EqUtils = (E: EQ) => {
     type nonrec t = t(E.t);
-    /* let eq = (a, b) =>
-       length(a) == length(b) &&
-       fold_left((acc, curr) => ) */
+    let eq = (a, b) =>
+      length(a) == length(b)
+      && fold_left((acc, (x, y)) => acc && E.eq(x, y), true, zip(a, b));
+
+    let elem = a => fold_left((acc, curr) => acc || E.eq(a, curr), false);
   };
 
   module Magma_Any: MAGMA_ANY with type t('a) = t('a) = {
@@ -134,4 +136,8 @@ module NonEmptyBase =
     include BsAbstract.Infix.Magma_Any(Magma_Any);
     include BsAbstract.Infix.Monad(Monad);
   };
+
+  /* bs-abstract modules that are not fully applied */
+  module type EQ_F = (E: EQ) => EQ with type t = t(E.t);
+  module Eq: EQ_F = (E: EQ) => { include EqUtils(E) };
 };

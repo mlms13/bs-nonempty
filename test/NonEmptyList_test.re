@@ -2,6 +2,8 @@ open Jest;
 open Expect;
 open NonEmptyList;
 
+module NelIntEq = NonEmptyList.EqUtils(BsAbstract.Int.Eq);
+
 describe("NonEmptyList Construction", () => {
   test("...from a single value", () =>
     expect(pure("a")) |> toEqual(NonEmpty("a", []))
@@ -130,6 +132,31 @@ describe("Bonus foldable value (e.g. filter)", () => {
 
   test("`find` returns None with no matches", () =>
     expect(find(isEven, make(1, [3, 5]))) |> toEqual(None)
+  );
+});
+
+describe("NonEmptyList EQ", () => {
+  let nelzero = make(0, [0, 0, 0]);
+  let nel = make(0, [1, 2, 3]);
+
+  test("Single-value NELs of the same value are eq", () =>
+    expect(NelIntEq.eq(pure(0), pure(0))) |> toEqual(true)
+  );
+
+  test("Longer matching NELs also pass eq", () =>
+    expect(NelIntEq.eq(make(0, [1, 2, 3]), nel)) |> toEqual(true)
+  );
+
+  test("Different NELs don't pass eq", () =>
+    expect(NelIntEq.eq(nelzero, nel)) |> toEqual(false)
+  );
+
+  test("Value is found with elem", () =>
+    expect(NelIntEq.elem(2, nel)) |> toEqual(true)
+  );
+
+  test("Missing value is not found with elem", () =>
+    expect(NelIntEq.elem(2, nelzero)) |> toEqual(false)
   );
 });
 
