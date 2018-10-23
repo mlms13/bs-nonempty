@@ -3,6 +3,7 @@ open Expect;
 open NonEmptyList;
 
 module NelIntEq = NonEmptyList.EqUtils(BsAbstract.Int.Eq);
+module NelIntOrd = NonEmptyList.OrdUtils(BsAbstract.Int.Ord);
 
 describe("NonEmptyList Construction", () => {
   test("...from a single value", () =>
@@ -158,6 +159,13 @@ describe("NonEmptyList EQ", () => {
   test("Missing value is not found with elem", () =>
     expect(NelIntEq.elem(2, nelzero)) |> toEqual(false)
   );
+});
+
+describe("NonEmptyList min/max helpers", () => {
+  let nel = make(1, [4, 3, 8, 2, 1]);
+
+  test("Can find min int", () => expect(NelIntOrd.min(nel)) |> toEqual(1));
+  test("Can find max int", () => expect(NelIntOrd.max(nel)) |> toEqual(8));
 });
 
 describe("NonEmptyList Apply", () => {

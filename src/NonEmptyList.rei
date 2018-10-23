@@ -24,16 +24,27 @@ let join: t(t('a)) => t('a);
 let apply: (t('a => 'b), t('a)) => t('b);
 let flat_map: (t('a), 'a => t('b)) => t('b);
 
-module EqUtils: (E: BsAbstract.Interface.EQ) => {
-  type nonrec t = t(E.t);
-  let eq: (t, t) => bool;
-  let elem: (E.t, t) => bool;
-};
+module EqUtils:
+  (E: BsAbstract.Interface.EQ) =>
+   {
+    type nonrec t = t(E.t);
+    let eq: (t, t) => bool;
+    let elem: (E.t, t) => bool;
+  };
 
-module Eq: (E: BsAbstract.Interface.EQ) => {
-  type nonrec t = t(E.t);
-  let eq: (t, t) => bool;
-};
+module OrdUtils:
+  (O: BsAbstract.Interface.ORD) =>
+   {
+    let min: t(O.t) => O.t;
+    let max: t(O.t) => O.t;
+  };
+
+module Eq:
+  (E: BsAbstract.Interface.EQ) =>
+   {
+    type nonrec t = t(E.t);
+    let eq: (t, t) => bool;
+  };
 
 module Magma_Any: {
   type nonrec t('a) = t('a);

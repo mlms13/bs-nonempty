@@ -101,6 +101,18 @@ module NonEmptyBase =
     let elem = a => fold_left((acc, curr) => acc || E.eq(a, curr), false);
   };
 
+  module OrdUtils = (O: ORD) => {
+    module Order = Ordering(O);
+    let lt = Order.less_than;
+    let gt = Order.greater_than;
+
+    let min = (NonEmpty(x, xs)) =>
+      F.fold_left((acc, curr) => lt(acc, curr) ? acc : curr, x, xs);
+
+    let max = (NonEmpty(x, xs)) =>
+      F.fold_left((acc, curr) => gt(acc, curr) ? acc : curr, x, xs);
+  };
+
   module Magma_Any: MAGMA_ANY with type t('a) = t('a) = {
     type nonrec t('a) = t('a);
 
@@ -139,5 +151,8 @@ module NonEmptyBase =
 
   /* bs-abstract modules that are not fully applied */
   module type EQ_F = (E: EQ) => EQ with type t = t(E.t);
-  module Eq: EQ_F = (E: EQ) => { include EqUtils(E) };
+  module Eq: EQ_F =
+    (E: EQ) => {
+      include EqUtils(E);
+    };
 };
